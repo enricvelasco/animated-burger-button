@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components'
-import { showingLine, separatorTop, separatorBottom, fadeIn } from './animations'
+import { showingLine, separatorTop, separatorBottom, fadeIn, createPositiveCross, createNegativeCross, invertedSeparatorTop, invertedSeparatorBottom, hideLine } from './animations'
 
 const line = css`
   height: 2px;
@@ -13,14 +13,6 @@ export const centerLine = css`
   transform: translateY(-50%);
 `
 
-export const rotatePositive = css`
-  transform: rotate(45deg);
-`
-
-export const rotateNegative = css`
-  transform: rotate(-45deg);
-`
-
 export const Container = styled.div`
   position: relative;
   width: 100%;
@@ -30,7 +22,7 @@ export const Container = styled.div`
 export const Text = styled.div`
   position: absolute;
   ${centerLine};
-  max-width: 75px;
+  width: fit-content;
   left: calc(-100% - 20px);
   ${fadeIn({ time: '1s' })};
 `
@@ -45,17 +37,17 @@ export const ButtonContainer = styled.div`
 export const HigerLine = styled.div`
   ${line};
   position: absolute;
-  ${({ activateSeparator }) => activateSeparator ? separatorTop({ time: '1s' }) : 'top: 35%'};
+  ${({ activateSeparator }) => activateSeparator ? separatorTop({ time: '1s' }) : invertedSeparatorTop({ time: '1s' })};
+  ${({ menuOpened }) => menuOpened && createPositiveCross({ time: '1s' })});
   animation-fill-mode: forwards;
-  ${({ menuOpened }) => menuOpened && rotatePositive});
 `
 
 export const LowerLine = styled.div`
   ${line};
   position: absolute;
-  ${({ activateSeparator }) => activateSeparator ? separatorBottom({ time: '1s' }) : 'bottom: 35%'};
+  ${({ activateSeparator }) => activateSeparator ? separatorBottom({ time: '1s' }) : invertedSeparatorBottom({ time: '1s' })};
+  ${({ menuOpened }) => menuOpened && createNegativeCross({ time: '1s' })});
   animation-fill-mode: forwards;
-  ${({ menuOpened }) => menuOpened && rotateNegative});
 `
 
 export const AnimatedLine = styled.div`
@@ -64,7 +56,7 @@ export const AnimatedLine = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
-  ${showingLine({ time: '1s' })};
+  ${({ activateSeparator }) => activateSeparator ? showingLine({ time: '1s' }) : hideLine({ time: '1s' })};
   animation-fill-mode: forwards;
   transform: translate(-50%, -50%);
 `
